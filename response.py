@@ -54,10 +54,10 @@ class Item5(BaseModel):
 items = {
     "tagline": {"name": "Foo", "price": 50.2},
     "infotech": {"name": "Bar", "description": "The bartenders", "price": 62, "tax": 20.2},
-    "hello": {"name": "Baz", "description": None, "price": 50.2, "tax": 10.5, "tags": []},
+    "hello": {"name": "Baz", "description": None, "price": 50.2, "tax": 10.5, "tags": ["hello tagline infotech"]},
 }
 
 
-@app.get("/items5/{item_id}", response_model=Item5, response_model_exclude_unset=True)
-async def read_item(item_id: str):
-    return items[item_id]
+@app.get("/items/{item_id}/name",response_model=Item5,response_model_include={"name", "description"})#rseponse_model_exclude_unset used to the class values are null
+async def read_item(user_name: str):
+    return items[user_name]
