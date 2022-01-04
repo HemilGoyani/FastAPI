@@ -52,9 +52,9 @@ class Item5(BaseModel):
 
 
 items = {
-    "foo": {"name": "Foo", "price": 50.2},
-    "bar": {"name": "Bar", "description": "The bartenders", "price": 62, "tax": 20.2},
-    "baz": {"name": "Baz", "description": None, "price": 50.2, "tax": 10.5, "tags": []},
+    "tagline": {"name": "Foo", "price": 50.2},
+    "infotech": {"name": "Bar", "description": "The bartenders", "price": 62, "tax": 20.2},
+    "hello": {"name": "Baz", "description": None, "price": 50.2, "tax": 10.5, "tags": []},
 }
 
 
