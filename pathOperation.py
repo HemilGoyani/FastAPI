@@ -1,6 +1,8 @@
 from typing import Optional, Set
 from fastapi import FastAPI, status
 from pydantic import BaseModel
+from fastapi.encoders import jsonable_encoder
+from datetime import datetime
 
 
 class Items(BaseModel):
@@ -53,3 +55,21 @@ async def read_items():
 @app.get("/users/", tags=["users"])
 async def read_users():
     return [{"username": "johndoe"}]
+
+
+# JSON Encoer example in api
+
+class ItemJSON(BaseModel):
+    title: str
+    timestamp: datetime
+    description: Optional[str] = None
+
+fake_db = {}
+app = FastAPI()
+@app.put("/itemsJSON/",tags = ["Put API in data"])
+def update_item(id: str, item: ItemJSON):
+    json_compatible_item_data = jsonable_encoder(item)
+    fake_db[id] = json_compatible_item_data
+    return fake_db
+    print(fake_db)
+
