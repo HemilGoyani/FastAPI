@@ -1,5 +1,6 @@
-from typing import Text
-from fastapi import FastAPI, Form, UploadFile, File
+from typing import Text,List
+from fastapi import FastAPI, File, Form, UploadFile
+from fastapi.responses import HTMLResponse
 
 
 app = FastAPI()
@@ -17,3 +18,31 @@ async def create_file(file: bytes = File(...)):
 @app.post("/uploadfile/")
 async def create_upload_file(file: UploadFile = File(...)):
     return {"filename":file.filename}
+
+
+
+
+# Multiple file upload  in API
+@app.post("/files/")
+
+async def create_files(files: List[bytes] = File(...)):
+
+    return {"file_sizes": [len(file) for file in files]}
+
+
+@app.post("/uploadfiles/")
+
+async def create_upload_files(files: List[UploadFile] = File(...)):
+
+    return {"filenames": [file.filename for file in files]}
+
+
+@app.post("/filesFormFiles/")
+async def create_file(
+    file: bytes = File(...), fileb: UploadFile = File(...), token: str = Form(...)
+):
+    return {
+        "file_size": len(file),
+        "token": token,
+        "fileb_content_type": fileb.content_type,
+    }
