@@ -1,4 +1,4 @@
-from typing import Optional
+from typing import Optional,Union
 
 from fastapi import FastAPI
 from pydantic import BaseModel, EmailStr
@@ -30,7 +30,7 @@ class UserInDB(BaseModel):
 
     username: str
 
-    hashed_password: str
+    hashed_password: str    
 
     email: EmailStr
     full_name: Optional[str] = None
@@ -61,3 +61,42 @@ async def create_user(user_in: UserIn):
 
     user_saved = fake_save_user(user_in)
     return user_saved
+
+
+
+class BaseItem(BaseModel):
+    description: str
+    type: str
+
+
+
+class CarItem(BaseItem):
+
+    type = "car"
+
+
+
+
+class PlaneItem(BaseItem):
+
+    type = "plane"
+
+    size: int
+
+
+
+items = {
+    "hello": {"description": "All my friends drive a low rider", "type": "car"},
+    "tagline": {
+        "description": "Music is my aeroplane, it's my aeroplane",
+        "type": "plane",
+        "size": 5,
+    },
+}
+
+
+
+@app.get("/items/{item_id}", response_model=Union[PlaneItem, CarItem])
+async def read_item(item_name: str):
+    return items[item_name]
+
