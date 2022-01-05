@@ -75,3 +75,10 @@ def update_item(name: str, item: ItemJSON):
         user_db[name] = json_compatible_item_data
         return user_db   
     raise HTTPException(status_code=404, detail="name not found")
+
+@app.patch("/items/{item_name}", response_model=ItemJSON)
+async def update_item(item_id: str, item: ItemJSON):
+    
+    user_db[item_id] = jsonable_encoder(item)
+    return user_db[item_id]
+
