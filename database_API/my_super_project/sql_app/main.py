@@ -9,8 +9,6 @@ import database
 import models 
 import database
 
-
-#from . import crud, database, models, schemas
 from database import db_state_default
 
 database.db.connect()
