@@ -56,9 +56,14 @@ async def index(user: UserSchemas, db: Session = Depends(get_db)):
     return u
 
 
-@app.get("/users/", response_model=List[GetUserSchemas])
-async def index(db: Session = Depends(get_db)):
-    return db.query(User).all()
+@app.get("/users/{user_id}", response_model=GetUserSchemas)
+async def index(user_id: int,db: Session = Depends(get_db)):
+    user = db.query(User).filter(User.id == user_id)
+    users = user.first()
+    if not users:
+        raise HTTPException(status_code=404, detail="id not found")
+    db.commit()
+    return users
 
 
 @app.put("/users/{user_id}", response_model=GetUserSchemas)
